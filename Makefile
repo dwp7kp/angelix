@@ -29,7 +29,7 @@ clean-all: $(CLEAN_MODULES)
 
 # Information for retrieving dependencies
 
-DOWNLOAD=wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 --tries=5 --continue
+DOWNLOAD=wget --no-check-certificate --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 --tries=5 --continue
 
 LLVM_GCC_URL=http://llvm.org/releases/2.9/llvm-gcc4.2-2.9-x86_64-linux.tar.bz2
 LLVM_GCC_ARCHIVE=llvm-gcc4.2-2.9-x86_64-linux.tar.bz2
@@ -120,6 +120,7 @@ klee-uclibc: $(KLEE_UCLIBC_DIR)
 
 $(KLEE_UCLIBC_DIR):
 	cd build && git clone --depth=1 $(KLEE_UCLIBC_URL)
+	sed -i "s/^WGET.*/WGET := wget --no-check-certificate/" build/klee-uclibc/extra/locale/Makefile.in
 
 clean-klee-uclibc:
 	cd $(KLEE_UCLIBC_DIR) && make clean
